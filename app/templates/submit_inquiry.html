@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}お問い合わせ{% endblock %}
+
+{% block content %}
+    <h1>お問い合わせ</h1>
+    <form action="{{ url_for('main.submit_inquiry') }}" method="post">
+        <div>
+            <label for="title">タイトル：</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        <div>
+            <label for="content">内容：</label>
+            <textarea id="content" name="content" rows="5" required></textarea>
+        </div>
+        <div>
+            <input type="submit" value="送信" class="button">
+        </div>
+    </form>
+{% endblock %}
+
+{% block styles %}
+    <style>
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+{% endblock %}

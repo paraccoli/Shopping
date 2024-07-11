@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}レビュー投稿{% endblock %}
+
+{% block content %}
+    <h1>レビュー投稿</h1>
+    <p>商品名: {{ product.name }}</p>
+    <form action="{{ url_for('main.submit_review', product_id=product.id) }}" method="post">
+        <div>
+            <label for="rating">評価（1〜5）:</label>
+            <select id="rating" name="rating" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+        <div>
+            <label for="content">レビュー内容:</label>
+            <textarea id="content" name="content" rows="5" required></textarea>
+        </div>
+        <div>
+            <input type="submit" value="投稿" class="button">
+        </div>
+    </form>
+{% endblock %}
+
+{% block styles %}
+    <style>
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+{% endblock %}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}商品追加{% endblock %}
+
+{% block content %}
+    <h1>商品追加</h1>
+    <form method="post" action="{{ url_for('main.add_product') }}" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.name.label }}<br>
+            {{ form.name() }}
+        </div>
+        <div>
+            {{ form.price.label }}<br>
+            {{ form.price() }}
+        </div>
+        <div>
+            {{ form.description.label }}<br>
+            {{ form.description() }}
+        </div>
+        <div>
+            {{ form.image.label }}<br>
+            {{ form.image() }}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}

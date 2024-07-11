@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}お気に入り{% endblock %}
+
+{% block content %}
+    <h1>お気に入り</h1>
+    {% if favorites %}
+        <div class="product-list">
+            {% for favorite in favorites %}
+                <div class="product">
+                    <h3>{{ favorite.product.name }}</h3>
+                    <p>価格: {{ favorite.product.price }}円</p>
+                    <p>{{ favorite.product.description }}</p>
+                    {% if favorite.product.image_filename %}
+                        <img src="{{ url_for('static', filename='images/' + favorite.product.image_filename) }}" alt="{{ favorite.product.name }}">
+                    {% endif %}
+                    <form action="{{ url_for('main.add_to_cart', product_id=favorite.product.id) }}" method="post">
+                        <input type="submit" value="カートに追加" class="button">
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>お気に入りに追加された商品はありません。</p>
+    {% endif %}
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .product {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .product img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+{% endblock %}

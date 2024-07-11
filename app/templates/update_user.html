@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>ユーザー情報の更新</h1>
+    <form method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32, class='input') }}
+        </div>
+        <div>
+            {{ form.nickname.label }}<br>
+            {{ form.nickname(size=32, class='input') }}
+        </div>
+        <div>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32, class='input') }}
+        </div>
+        <div>
+            {{ form.password2.label }}<br>
+            {{ form.password2(size=32, class='input') }}
+        </div>
+        <div>
+            {{ form.avatar.label }}<br>
+            {% if current_user.avatar_filename %}
+                <img src="{{ url_for('static', filename='uploads/' + current_user.avatar_filename) }}" alt="Current Avatar">
+            {% endif %}
+            {{ form.avatar(class='input') }}
+        </div>
+        <div>
+            {{ form.submit(class='button') }}
+        </div>
+    </form>
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}

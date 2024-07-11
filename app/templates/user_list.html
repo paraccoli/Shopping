@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}ユーザー一覧{% endblock %}
+
+{% block content %}
+    <h1>ユーザー一覧</h1>
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>ログインID</th>
+                <th>ニックネーム</th>
+                <th>メールアドレス</th>
+                <th>管理者権限</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.nickname }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ 'はい' if user.is_admin else 'いいえ' }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .user-table th, .user-table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .user-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}

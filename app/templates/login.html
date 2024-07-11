@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}ログイン{% endblock %}
+
+{% block content %}
+    <h1>ログイン</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <form method="post" action="{{ url_for('main.login') }}">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32, class="input") }}
+        </div>
+        <div>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32, class="input") }}
+        </div>
+        <div>
+            {{ form.submit(class="button") }}
+        </div>
+    </form>
+    <p>アカウントをお持ちでないですか？ <a href="{{ url_for('main.register') }}">登録</a></p>
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .messages {
+            background-color: #f1c40f;
+            color: white;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+{% endblock %}

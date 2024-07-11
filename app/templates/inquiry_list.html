@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}お問い合わせ一覧{% endblock %}
+
+{% block content %}
+    <h1>お問い合わせ一覧</h1>
+    <a href="{{ url_for('main.notifications') }}" class="button">通知一覧</a>
+    {% if inquiries %}
+        <table class="inquiry-table">
+            <thead>
+                <tr>
+                    <th>ユーザー</th>
+                    <th>タイトル</th>
+                    <th>内容</th>
+                    <th>ステータス</th>
+                    <th>アクション</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inquiry in inquiries %}
+                    <tr>
+                        <td>{{ inquiry.user.username }}</td>
+                        <td>{{ inquiry.title }}</td>
+                        <td>{{ inquiry.content }}</td>
+                        <td>
+                            <form action="{{ url_for('main.update_inquiry_status', inquiry_id=inquiry.id) }}" method="post">
+                                <select name="status" onchange="this.form.submit()">
+                                    <option value="未解決" {% if inquiry.status == '未解決' %}selected{% endif %}>未解決</option>
+                                    <option value="対応中" {% if inquiry.status == '対応中' %}selected{% endif %}>対応中</option>
+                                    <option value="解決" {% if inquiry.status == '解決' %}selected{% endif %}>解決</option>
+                                </select>
+                            </form>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('main.inquiry_detail', inquiry_id=inquiry.id) }}" class="button">詳細</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>お問い合わせはありません。</p>
+    {% endif %}
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .inquiry-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .inquiry-table th, .inquiry-table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .inquiry-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}

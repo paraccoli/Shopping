@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #1abc9c;
+            color: white;
+            padding: 10px 20px;
+        }
+        .header a {
+            color: white;
+            text-decoration: none;
+        }
+        .content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .button {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+        .cart-icon, .notification-icon {
+        position: absolute;
+        top: 10px;
+        }
+        .cart-icon {
+            right: 60px;
+        }
+        .notification-icon {
+            right: 20px;
+        }
+        .cart-icon img, .notification-icon img {
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <div class="header">
+        <a href="{{ url_for('main.index') }}">ホーム</a>
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('main.cart') }}" class="cart-icon">
+                {% if cart_count > 0 %}
+                    <img src="{{ url_for('static', filename='images/cart_in.png') }}" alt="カートアイコン">
+                    <span class="cart-count">{{ cart_count }}</span>
+                {% else %}
+                    <img src="{{ url_for('static', filename='images/cart.png') }}" alt="カートアイコン">
+                {% endif %}
+            </a>
+            {% if current_user.is_admin %}
+                <a href="{{ url_for('main.send_notification') }}" class="notification-icon">
+                    <img src="{{ url_for('static', filename='images/megane.png') }}" alt="通知アイコン">
+                    {% if notification_count > 0 %}
+                        <span class="notification-count">{{ notification_count }}</span>
+                    {% endif %}
+                </a>
+            {% else %}
+                <a href="{{ url_for('main.notifications') }}" class="notification-icon">
+                    <img src="{{ url_for('static', filename='images/megane.png') }}" alt="通知アイコン">
+                    {% if notification_count > 0 %}
+                        <span class="notification-count">{{ notification_count }}</span>
+                    {% endif %}
+                </a>
+            {% endif %}
+        {% endif %}
+        {% if current_user.is_authenticated and current_user.is_admin %}
+            <div>
+                <a href="{{ url_for('main.user_list') }}">ユーザー一覧</a>
+                <a href="{{ url_for('main.user_management') }}">ユーザー管理</a>
+                <a href="{{ url_for('main.order_list') }}">注文一覧</a>
+            </div>
+        {% endif %}
+    </div>
+    <div class="container">
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    <script>
+        function showAlert(message) {
+            alert(message);
+        }
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    showAlert("{{ message }}");
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </script>
+</body>
+</html>

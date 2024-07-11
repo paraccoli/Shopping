@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}通知{% endblock %}
+
+{% block content %}
+    <h1>通知</h1>
+    <a href="{{ url_for('main.submit_inquiry') }}" class="button">お問い合わせ</a>
+    {% if notifications %}
+        <ul class="notification-list">
+            {% for notification in notifications %}
+                <li class="notification-item">
+                    <p>{{ notification.message }}</p>
+                    <p>{{ notification.created_at }}</p>
+                    {% if not notification.is_read %}
+                        <form action="{{ url_for('main.mark_as_read', notification_id=notification.id) }}" method="post">
+                            <input type="submit" value="既読にする" class="button">
+                        </form>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>通知はありません。</p>
+    {% endif %}
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .notification-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .notification-item {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+    </style>
+{% endblock %}

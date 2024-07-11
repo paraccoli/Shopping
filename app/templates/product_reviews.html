@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}レビュー一覧{% endblock %}
+
+{% block content %}
+    <h1>{{ product.name }}のレビュー一覧</h1>
+    {% if reviews %}
+        {% for review in reviews %}
+            <div class="review">
+                <p>投稿者: {{ review.user.username }}</p>
+                <p>投稿日時: {{ review.created_at }}</p>
+                <p>{{ review.content }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>まだレビューがありません。</p>
+    {% endif %}
+    <a href="{{ url_for('main.index') }}" class="button">商品一覧に戻る</a>
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .review {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+{% endblock %}

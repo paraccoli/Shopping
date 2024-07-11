@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}注文詳細{% endblock %}
+
+{% block content %}
+    <h1>注文詳細</h1>
+    <h2>注文ID: {{ order.id }}</h2>
+    <p>注文日時: {{ order.created_at }}</p>
+    <p>注文ステータス: {{ order.status }}</p>
+    <p>ユーザー: {{ order.user.username }}</p>
+    <h3>注文商品</h3>
+    <table class="order-table">
+        <thead>
+            <tr>
+                <th>商品名</th>
+                <th>価格</th>
+                <th>数量</th>
+                <th>小計</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.items %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.product.price }}円</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.product.price * item.quantity }}円</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>合計金額: {{ order.items|sum(attribute='product.price') }}円</p>
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .order-table th, .order-table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .order-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}

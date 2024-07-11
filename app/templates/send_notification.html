@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}通知の送信{% endblock %}
+
+{% block content %}
+    <h1>通知の送信</h1>
+    <form action="{{ url_for('main.send_notification') }}" method="post">
+        <div>
+            <label for="user_id">ユーザー：</label>
+            <select id="user_id" name="user_id">
+                <option value="all">全てのユーザー</option>
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="subject">件名：</label>
+            <input type="text" id="subject" name="subject" required>
+        </div>
+        <div>
+            <label for="message">メッセージ：</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+        <div>
+            <input type="submit" value="送信" class="button">
+        </div>
+    </form>
+
+    <h2>お問い合わせ一覧</h2>
+    <a href="{{ url_for('main.inquiry_list') }}" class="button">お問い合わせ一覧を表示</a>
+{% endblock %}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}商品詳細{% endblock %}
+
+{% block content %}
+    <h1>{{ product.name }}</h1>
+    <p>価格: {{ product.price }}円</p>
+    <p>{{ product.description }}</p>
+    {% if product.image_filename %}
+        <img src="{{ url_for('static', filename='images/' + product.image_filename) }}" alt="{{ product.name }}">
+    {% endif %}
+    <form action="{{ url_for('main.add_to_cart', product_id=product.id) }}" method="post">
+        <input type="submit" value="カートに追加" class="button">
+    </form>
+    <form action="{{ url_for('main.add_to_favorites', product_id=product.id) }}" method="post">
+        <button type="submit" class="favorite-button">
+            <img src="{{ url_for('static', filename='images/star.png') }}" alt="お気に入り" width="20" height="20">
+        </button>
+    </form>
+
+    <h2>レビュー一覧</h2>
+    {% if reviews %}
+        {% for review in reviews %}
+            <div class="review">
+                <p>投稿者: {{ review.user.username }}</p>
+                <p>評価: {{ '★' * review.rating }}</p>
+                <p>投稿日時: {{ review.created_at }}</p>
+                <p>{{ review.content }}</p>
+                {% if current_user.is_authenticated %}
+                    <form action="{{ url_for('main.like_review', review_id=review.id) }}" method="post">
+                        <button type="submit" class="like-button">いいね！ ({{ review.likes|length }})</button>
+                    </form>
+                {% endif %}
+                {% if current_user.id == review.user_id %}
+                    <a href="{{ url_for('main.edit_review', review_id=review.id) }}" class="button">編集</a>
+                    <form action="{{ url_for('main.delete_review', review_id=review.id) }}" method="post" onsubmit="return confirm('本当に削除しますか？');">
+                        <input type="submit" value="削除" class="button">
+                    </form>
+                {% endif %}
+                {% if current_user.is_admin %}
+                    <a href="{{ url_for('main.admin_edit_review', review_id=review.id) }}" class="button">管理者編集</a>
+                    <form action="{{ url_for('main.admin_delete_review', review_id=review.id) }}" method="post" onsubmit="return confirm('本当に削除しますか？');">
+                        <input type="submit" value="管理者削除" class="button">
+                    </form>
+                {% endif %}
+            </div>
+            <div class="comments">
+                <h3>コメント一覧</h3>
+                {% for comment in review.comments %}
+                    <div class="comment">
+                        <p>投稿者: {{ comment.user.username }}</p>
+                        <p>投稿日時: {{ comment.created_at }}</p>
+                        <p>{{ comment.content }}</p>
+                    </div>
+                {% endfor %}
+                {% if current_user.is_authenticated %}
+                    <form action="{{ url_for('main.submit_review_comment', review_id=review.id) }}" method="post">
+                        <div>
+                            <label for="content">コメント:</label>
+                            <textarea id="content" name="content" rows="2" required></textarea>
+                        </div>
+                        <div>
+                            <input type="submit" value="コメントを投稿" class="button">
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>まだレビューがありません。</p>
+    {% endif %}
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('main.submit_review', product_id=product.id) }}" class="button">レビューを投稿する</a>
+    {% endif %}
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .review {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .comments {
+            margin-left: 20px;
+        }
+        .comment {
+            border: 1px solid #ccc;
+            padding: 5px;
+            margin-bottom: 5px;
+        }
+        .like-button {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}

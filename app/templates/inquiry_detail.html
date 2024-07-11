@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}お問い合わせ詳細{% endblock %}
+
+{% block content %}
+    <h1>お問い合わせ詳細</h1>
+    <div>
+        <h2>{{ inquiry.title }}</h2>
+        <p>ユーザー: {{ inquiry.user.username }}</p>
+        <p>ステータス: {{ inquiry.status }}</p>
+        <p>作成日時: {{ inquiry.created_at }}</p>
+        <p>内容:</p>
+        <p>{{ inquiry.content }}</p>
+    </div>
+    <a href="{{ url_for('main.inquiry_list') }}" class="button">戻る</a>
+{% endblock %}

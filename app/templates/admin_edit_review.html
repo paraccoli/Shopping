@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}管理者レビュー編集{% endblock %}
+
+{% block content %}
+    <h1>管理者レビュー編集</h1>
+    <p>商品名: {{ review.product.name }}</p>
+    <form action="{{ url_for('main.admin_edit_review', review_id=review.id) }}" method="post">
+        <div>
+            <label for="rating">評価（1〜5）:</label>
+            <select id="rating" name="rating" required>
+                <option value="1" {% if review.rating == 1 %}selected{% endif %}>1</option>
+                <option value="2" {% if review.rating == 2 %}selected{% endif %}>2</option>
+                <option value="3" {% if review.rating == 3 %}selected{% endif %}>3</option>
+                <option value="4" {% if review.rating == 4 %}selected{% endif %}>4</option>
+                <option value="5" {% if review.rating == 5 %}selected{% endif %}>5</option>
+            </select>
+        </div>
+        <div>
+            <label for="content">レビュー内容:</label>
+            <textarea id="content" name="content" rows="5" required>{{ review.content }}</textarea>
+        </div>
+        <div>
+            <input type="submit" value="更新" class="button">
+        </div>
+    </form>
+{% endblock %}
+
+{% block styles %}
+    <style>
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+{% endblock %}

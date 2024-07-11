@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}カート{% endblock %}
+
+{% block content %}
+    <h1>カート</h1>
+    <a href="{{ url_for('main.favorites') }}" class="button">お気に入りリスト</a>
+    <h2>カートの商品</h2>
+    {% if cart_items %}
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>商品名</th>
+                    <th>価格</th>
+                    <th>数量</th>
+                    <th>小計</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.product.price }}円</td>
+                        <td>
+                            <form action="{{ url_for('main.update_quantity', cart_item_id=item.id) }}" method="post" class="quantity-form">
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="quantity-input">
+                                <input type="submit" value="更新" class="button">
+                            </form>
+                        </td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.product.price * item.quantity }}円</td>
+                        <td>
+                            <form action="{{ url_for('main.remove_from_cart', cart_item_id=item.id) }}" method="post">
+                                <input type="submit" value="取り消す" class="button">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p>合計金額: {{ total_price }}円</p>
+        <form action="{{ url_for('main.place_order') }}" method="post">
+            <input type="submit" value="注文する" class="button">
+        </form>
+    {% else %}
+        <p>カートは空です。</p>
+    {% endif %}
+
+    <h2>注文済み商品</h2>
+    {% if orders %}
+    {% for order in orders %}
+        <h3>注文 #{{ order.id }} - {{ order.created_at }}</h3>
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>商品名</th>
+                    <th>価格</th>
+                    <th>数量</th>
+                    <th>小計</th>
+                    <th>レビュー</th>
+                    <th>アクション</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.product.price }}円</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.product.price * item.quantity }}円</td>
+                        <td>
+                            <a href="{{ url_for('main.submit_review', product_id=item.product.id) }}" class="button">レビューを投稿</a>
+                        </td>
+                        <td>
+                            {% if order.status == 'pending' %}
+                                <form action="{{ url_for('main.cancel_order_item', order_item_id=item.id) }}" method="post">
+                                    <input type="submit" value="取り消す" class="button">
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+    {% else %}
+        <p>注文済みの商品はありません。</p>
+    {% endif %}
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .cart-table th, .cart-table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .cart-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}

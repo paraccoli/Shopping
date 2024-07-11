@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}商品一覧{% endblock %}
+
+{% block content %}
+    <h1>商品一覧</h1>
+    {% if current_user.is_authenticated %}
+        <div class="welcome-message">
+            <h2>ようこそ{{ current_user.nickname if current_user.nickname else current_user.username }}さん！</h2>
+        </div>
+        <a href="{{ url_for('main.logout') }}" class="button">ログアウト</a>
+        <a href="{{ url_for('main.user_info') }}" class="button">ユーザー情報</a>
+    {% else %}
+        <a href="{{ url_for('main.login') }}" class="button">ログイン</a>
+    {% endif %}
+
+    {% if current_user.is_authenticated and current_user.is_admin %}
+        <a href="{{ url_for('main.add_product') }}" class="button">商品を追加する</a>
+        <a href="{{ url_for('main.delete_product') }}" class="button">商品を削除する</a>
+    {% endif %}
+
+    <form action="{{ url_for('main.search') }}" method="get" class="search-form">
+        <input type="text" name="query" placeholder="商品を検索" class="search-input">
+        <input type="submit" value="検索" class="button">
+    </form>
+
+    <h2>商品一覧</h2>
+    <div class="product-list">
+        {% for product in products %}
+            <div class="product">
+                <h3>{{ product.name }}</h3>
+                <p>価格: {{ product.price }}円</p>
+                <p>{{ product.description }}</p>
+                {% if product.image_filename %}
+                    <a href="{{ url_for('main.product_detail', product_id=product.id) }}">
+                        <img src="{{ url_for('static', filename='images/' + product.image_filename) }}" alt="{{ product.name }}">
+                    </a>
+                {% endif %}
+                <form action="{{ url_for('main.add_to_cart', product_id=product.id) }}" method="post">
+                    <input type="submit" value="カートに追加" class="button">
+                </form>
+                <form action="{{ url_for('main.add_to_favorites', product_id=product.id) }}" method="post">
+                    <button type="submit" class="favorite-button">
+                        <img src="{{ url_for('static', filename='images/star.png') }}" alt="お気に入り" width="20" height="20">
+                    </button>
+                </form>
+                <a href="{{ url_for('main.product_detail', product_id=product.id) }}" class="button">レビューを見る</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .search-form {
+            margin-bottom: 20px;
+        }
+        .search-input {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .product {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .product img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+{% endblock %}

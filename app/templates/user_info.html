@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}ユーザー情報{% endblock %}
+
+{% block content %}
+    <h1>ユーザー情報</h1>
+    {% if current_user.avatar_filename %}
+        <img src="{{ url_for('static', filename='uploads/' + current_user.avatar_filename) }}" alt="Avatar" width="50" height="50">
+    {% else %}
+        <img src="{{ url_for('static', filename='avatars/default.png') }}" alt="Default Avatar" width="50" height="50">
+    {% endif %}
+    <p>ログインID: {{ current_user.username }}</p>
+    <p>ニックネーム: {{ current_user.nickname }}</p>
+    <p>メールアドレス: {{ current_user.email }}</p>
+    <a href="{{ url_for('main.update_user') }}" class="button">ユーザー情報の更新</a>
+    <form id="delete-account-form" action="{{ url_for('main.delete_account') }}" method="post">
+        <input type="button" value="退会する" onclick="confirmDeleteAccount()" class="button">
+    </form>
+    <script>
+        function confirmDeleteAccount() {
+            if (confirm("本当にアカウントを削除しますか？この操作は元に戻せません。")) {
+                document.getElementById("delete-account-form").submit();
+            }
+        }
+    </script>
+{% endblock %}

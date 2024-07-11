@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}商品削除{% endblock %}
+
+{% block content %}
+    <h1>商品削除</h1>
+    <p>削除する商品を選択してください。</p>
+    <form id="delete-form" action="{{ url_for('main.delete_product') }}" method="post">
+        <ul>
+            {% for product in products %}
+                <li>
+                    <input type="checkbox" name="product_ids" value="{{ product.id }}">
+                    {{ product.name }} - {{ product.description }} - 価格: {{ product.price }}
+                </li>
+            {% endfor %}
+        </ul>
+        <input type="button" value="削除" onclick="showPasswordPrompt()">
+    </form>
+    <a href="{{ url_for('main.index') }}">キャンセル</a>
+
+    <script>
+        function showPasswordPrompt() {
+            var password = prompt("アドミンパスワードを入力してください:");
+            if (password) {
+                var form = document.getElementById('delete-form');
+                var passwordInput = document.createElement('input');
+                passwordInput.type = 'hidden';
+                passwordInput.name = 'admin_password';
+                passwordInput.value = password;
+                form.appendChild(passwordInput);
+                form.submit();
+            }
+        }
+    </script>
+{% endblock %}
