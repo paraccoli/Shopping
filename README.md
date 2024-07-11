@@ -104,4 +104,5 @@ Administrators can manage products, process orders, and manage users.
 ## **作成者 Bot developer**
 
 - 作成者: xM1guel
-- GitHub: (https://github.com/xM1guel)"# local-ecommerce" 
+- GitHub: https://github.com/xM1guel
+- Zenn: https://zenn.dev/miguel
