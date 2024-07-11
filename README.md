@@ -46,6 +46,29 @@
 4. ユーザー登録またはログインを行い、商品の閲覧、検索、カートへの追加、注文、レビューの投稿などの機能を利用できます。
 5. 管理者アカウントでログインすると、管理者用の機能（商品管理、注文管理、ユーザー管理など）にアクセスできます。(ID:admin, Password:admin)
 
+<img src="https://emojix.s3.ap-northeast-1.amazonaws.com/g3/svg/26a0.svg" width="20" hight="20"> **上記の例で起動しない場合は以下の方法でお試しください。** <img src="https://emojix.s3.ap-northeast-1.amazonaws.com/g3/svg/26a0.svg" width="20" hight="20">
+1. コマンドプロンプトから仮想環境を立ち上げます。
+```
+python -m venv [仮想環境名]
+```
+2. 必要なPythonライブラリをインストールします。
+```
+pip install -r requirements.txt
+```
+3. データベースの初期化をします。
+```
+flask db init
+```
+4. データベースのマイグレーションをします。
+```
+flask db migrate
+```
+5. アプリケーションを起動します。
+```
+flask run
+```
+
+
 ## **その他のリソース**
 - [Flask公式ドキュメント](https://flask.palletsprojects.com/en/3.0.x/)
 - [SQLAlchemy公式ドキュメント](https://docs.sqlalchemy.org/en/20/)
