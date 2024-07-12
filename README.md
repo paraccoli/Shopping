@@ -125,7 +125,7 @@ Administrators can manage products, process orders, and manage users.
 5. Logging in with an administrator account will grant access to admin features (product management, order management, user management, etc.).
 
 
-## **作成者 Bot developer**
+## **作成者 Developer**
 
 - 作成者: xM1guel
 - GitHub: https://github.com/xM1guel
